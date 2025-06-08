@@ -36,7 +36,6 @@
         android:layout_weight="1"
         android:clipToPadding="false"
         android:paddingBottom="8dp" />
-
     <LinearLayout
         android:id="@+id/paginationLayout"
         android:layout_width="match_parent"

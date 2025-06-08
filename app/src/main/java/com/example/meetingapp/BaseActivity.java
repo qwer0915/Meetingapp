@@ -10,17 +10,27 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.meetingapp.util.SessionManager;
 import com.example.meetingapp.view.LoginActivity;
 import com.example.meetingapp.view.MainActivity;
 import com.example.meetingapp.view.RegisterActivity;
 
 public class BaseActivity extends AppCompatActivity {
+    private boolean isLoggedIn = false;
     protected Toolbar toolbar;
     protected TextView titleView;
     protected Button btnLogin, btnRegister;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SessionManager.init(getApplicationContext());
         super.onCreate(savedInstanceState);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (toolbar != null) {
+            updateAuthButtons(); // 항상 로그인 상태에 따라 갱신
+        }
     }
     protected void setupToolbar() {
         toolbar     =       findViewById(R.id.main_toolbar);
@@ -48,19 +58,25 @@ public class BaseActivity extends AppCompatActivity {
         updateAuthButtons();
     }
     protected void updateAuthButtons() {
-        boolean isLoggedIn = AuthManager.isLoggedIn(this); // SharedPreferences 등으로 구현
+        boolean isLoggedIn = ApiServiceWrapper.isLoggedIn(this);
         if (isLoggedIn) {
             btnLogin.setText("로그아웃");
             btnRegister.setVisibility(View.GONE);
 
             btnLogin.setOnClickListener(v -> {
-                AuthManager.logout(this);
-                updateAuthButtons();
-                Toast.makeText(this, "로그아웃 되었습니다", Toast.LENGTH_SHORT).show();
+                ApiServiceWrapper.logout(this, () -> {
+                    updateAuthButtons();
+                    Toast.makeText(this, "로그아웃 되었습니다", Toast.LENGTH_SHORT).show();
+                });
             });
         } else {
             btnLogin.setText("로그인");
             btnRegister.setVisibility(View.VISIBLE);
+
+            btnLogin.setOnClickListener(v -> {
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+            });
         }
     }
 }
