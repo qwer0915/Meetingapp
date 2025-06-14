@@ -52,20 +52,10 @@
             android:text="이전" />
 
         <Button
-            android:id="@+id/btnPage1"
+            android:id="@+id/btnPageNow"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:text="1" />
-        <Button
-            android:id="@+id/btnPage2"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:text="2" />
-        <Button
-            android:id="@+id/btnPage3"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:text="3" />
         <Button
             android:id="@+id/btnNext"
             android:layout_width="wrap_content"

@@ -49,7 +49,7 @@ public class BoardDetailActivity extends BaseActivity {
     }
 
     private void loadQuestionDetail(int id) {
-        ApiService api = ApiClient.getClient().create(ApiService.class);
+        ApiService api = ApiClient.getClient(getApplicationContext()).create(ApiService.class);
         api.getQuestionDetail(id).enqueue(new Callback<Map<String, Object>>() {
             @Override
             public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {

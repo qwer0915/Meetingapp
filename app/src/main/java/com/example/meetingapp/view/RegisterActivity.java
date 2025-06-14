@@ -60,7 +60,7 @@ public class RegisterActivity extends BaseActivity {
         registerData.put("username", id);
         registerData.put("password", pw);
         registerData.put("email", email);
-        ApiService api = ApiClient.getClient().create(ApiService.class);
+        ApiService api = ApiClient.getClient(getApplicationContext()).create(ApiService.class);
         api.register(registerData).enqueue(new Callback<Map<String, Object>>() {
             @Override
             public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
@@ -68,7 +68,7 @@ public class RegisterActivity extends BaseActivity {
                     Toast.makeText(RegisterActivity.this, "회원가입 성공!", Toast.LENGTH_SHORT).show();
                     finish(); // 로그인 화면으로 돌아가기
                 } else {
-                    Toast.makeText(RegisterActivity.this, "회원가입 실패: " + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "회원가입 실패: 이미 등록된 회원정보입니다. " , Toast.LENGTH_SHORT).show();
                 }
             }
 
