@@ -3,8 +3,12 @@ package com.example.meetingapp.view;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -29,6 +33,7 @@ public class AnswerFormActivity extends BaseActivity {
     int questionId, answerId;
     String mode;
     String username;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +47,7 @@ public class AnswerFormActivity extends BaseActivity {
 
         api = ApiClient.getClient(getApplicationContext()).create(ApiService.class);
 
-        Intent intent = getIntent();
+        intent = getIntent();
         mode = intent.getStringExtra("mode");
         questionId = intent.getIntExtra("questionId", -1);
         answerId = intent.getIntExtra("answerId", -1);
@@ -60,6 +65,7 @@ public class AnswerFormActivity extends BaseActivity {
 
         if ("edit".equals(mode)) {
             ans_content.setText(content);
+            board_title.setText(titleBoard);
             btn_submit.setText("수정");
         } else {
             btn_submit.setText("등록");
@@ -78,7 +84,7 @@ public class AnswerFormActivity extends BaseActivity {
             data.put("author", username);
 
             if ("edit".equals(mode)) {
-                updateAnswer(answerId, data, inputContent);
+                updateAnswer( data, inputContent);
             } else {
                 createAnswer(questionId, data);
             }
@@ -104,11 +110,19 @@ public class AnswerFormActivity extends BaseActivity {
         });
     }
 
-    private void updateAnswer(int answerId, Map<String, Object> data, String updatedContent) {
-        api.updateAnswer(answerId, data).enqueue(new Callback<Map<String, Object>>() {
+    private void updateAnswer(Map<String, Object> data, String updatedContent) {
+        data.put("answerId", answerId);
+        data.put("username", username);
+        data.put("content",ans_content.getText().toString().trim());;
+        data.put("questionId",questionId);
+        Log.d("AnswerForm", "Sending update request with data: " + data.toString());
+
+        api.updateAnswer(data).enqueue(new Callback<Map<String, Object>>() {
             @Override
             public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                Log.d("AnswerForm", "Update response received: " + response.code());
                 if (response.isSuccessful()) {
+                    hideKeyboard();
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra("answerId", answerId);
                     resultIntent.putExtra("updatedContent", updatedContent);
@@ -124,6 +138,13 @@ public class AnswerFormActivity extends BaseActivity {
                 Toast.makeText(AnswerFormActivity.this, "네트워크 오류: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private void hideKeyboard() {
+        View view = getCurrentFocus();
+        if (view != null && view.isAttachedToWindow()) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }
 

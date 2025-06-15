@@ -38,9 +38,9 @@ public interface ApiService {
     Call<Map<String, Object>> deleteQuestion(@Path("id") int id, @Body Map<String, Object> body);
     @POST("answer/insert/{questionId}")
     Call<Map<String, Object>> createAnswer(@Path("questionId") int questionId, @Body Map<String, Object> content);
-    @POST("answer/update/{answerId}")
-    Call<Map<String, Object>> updateAnswer(@Path("answerId") int answerId, @Body Map<String, Object> body);
-    @POST("/answer/delete")
+    @POST("answer/update")
+    Call<Map<String, Object>> updateAnswer(@Body Map<String, Object> body);
+    @POST("answer/delete")
     Call<Map<String, Object>> deleteAnswer(@Body Map<String, Object> body);
 
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.meetingapp.ApiClient;
 import com.example.meetingapp.ApiService;
 import com.example.meetingapp.R;
+import com.example.meetingapp.util.OnAnswerEditListener;
 import com.example.meetingapp.view.AnswerFormActivity;
 
 import java.util.ArrayList;
@@ -32,10 +35,12 @@ public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.ViewHolder
     private Context context;
     private ApiService api;
     private int questionId;
-    public AnswerAdapter(Context context, ApiService api,int questionId) {
+    private OnAnswerEditListener editListener;
+    public AnswerAdapter(Context context, ApiService api, int questionId, OnAnswerEditListener editListener) {
         this.context = context;
-        this.api = api;
-        this.questionId=questionId;
+        this.api = (api != null) ? api : ApiClient.getClient(context.getApplicationContext()).create(ApiService.class);
+        this.questionId = questionId;
+        this.editListener = editListener;
     }
     public void setItems(List<AnswerItem> items) {
         this.items = items;
@@ -83,10 +88,13 @@ public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.ViewHolder
             if (currentPosition == RecyclerView.NO_POSITION) return;
 
             AnswerItem currentItem = items.get(currentPosition);
+            Log.d("AnswerAdapter", "Delete request: questionId=" + questionId + ", answerId=" + currentItem.id);
+
             Map<String, Object> body = new HashMap<>();
             body.put("author", username);
             body.put("questionId", questionId);
             body.put("id", currentItem.id);
+
             api.deleteAnswer(body).enqueue(new Callback<Map<String, Object>>() {
                 @Override
                 public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
@@ -95,7 +103,7 @@ public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.ViewHolder
                         items.remove(currentPosition);
                         notifyItemRemoved(currentPosition);
                     } else {
-                        Toast.makeText(context, "삭제 실패", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "삭제 실패: " + response.code(), Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -106,8 +114,12 @@ public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.ViewHolder
             });
         });
 
+
         //수정모드
         holder.btnEdit.setOnClickListener(v -> {
+            if (editListener != null) {
+                editListener.onEditAnswer(item, holder.getAdapterPosition());
+            }
             int currentPosition = holder.getAdapterPosition();
             if (currentPosition == RecyclerView.NO_POSITION) return;
 
@@ -132,5 +144,6 @@ public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.ViewHolder
         SharedPreferences prefs = context.getSharedPreferences("loginPrefs", Context.MODE_PRIVATE);
         return prefs.getString("username", null);
     }
+
 }
 

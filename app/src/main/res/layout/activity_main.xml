@@ -45,22 +45,22 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp">
 
-        <Button
-            android:id="@+id/btnPrev"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="이전" />
+<!--        <Button-->
+<!--            android:id="@+id/btnPrev"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="이전" />-->
 
-        <Button
-            android:id="@+id/btnPageNow"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:text="1" />
-        <Button
-            android:id="@+id/btnNext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="다음" />
+<!--        <Button-->
+<!--            android:id="@+id/btnPageNow"-->
+<!--            android:layout_width="60dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="1" />-->
+<!--        <Button-->
+<!--            android:id="@+id/btnNext"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="다음" />-->
 
     </LinearLayout>
     <Button

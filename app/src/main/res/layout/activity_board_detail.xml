@@ -54,18 +54,18 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btn_recommend"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="추천"/>
+<!--            <Button-->
+<!--                android:id="@+id/btn_recommend"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="추천"/>-->
 
-            <TextView
-                android:id="@+id/tv_recommend_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="0"/>
+<!--            <TextView-->
+<!--                android:id="@+id/tv_recommend_count"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="8dp"-->
+<!--                android:text="0"/>-->
 
             <Space
                 android:layout_width="0dp"
