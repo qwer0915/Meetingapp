@@ -13,8 +13,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiService {
-    @GET("ping")
-    Call<ResponseBody> ping();
+
     @POST("user/login")
     Call<Map<String,Object>> login(@Body Map<String,Object> loginData);
     @POST("user/logout")
@@ -32,4 +31,18 @@ public interface ApiService {
     );
     @POST("question/create")
     Call<Map<String, Object>> createQuestion(@Body Map<String, Object> param);
+    @POST("question/update/{id}")
+    Call<Map<String, Object>> updateQuestion(@Path("id") int id, @Body Map<String, Object> body);
+
+    @POST("question/delete/{id}")
+    Call<Map<String, Object>> deleteQuestion(@Path("id") int id, @Body Map<String, Object> body);
+    @POST("answer/insert/{questionId}")
+    Call<Map<String, Object>> createAnswer(@Path("questionId") int questionId, @Body Map<String, Object> content);
+    @POST("answer/update/{answerId}")
+    Call<Map<String, Object>> updateAnswer(@Path("answerId") int answerId, @Body Map<String, Object> body);
+    @POST("/answer/delete")
+    Call<Map<String, Object>> deleteAnswer(@Body Map<String, Object> body);
+
+
+
 }

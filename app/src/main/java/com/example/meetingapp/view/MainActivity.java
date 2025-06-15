@@ -41,6 +41,7 @@ public class MainActivity extends BaseActivity {
     EditText etSearch;
     QuestionAdapter questionAdapter  = new QuestionAdapter(new ArrayList<>());
     Integer pageNow=1;
+    RecyclerView recyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +53,7 @@ public class MainActivity extends BaseActivity {
         btnPageNow= findViewById(R.id.btnPageNow);
         btnPrev= findViewById(R.id.btnPrev);
         btnNext = findViewById(R.id.btnNext);
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerView);
         buttonUpload.setOnClickListener(v -> {
             Intent intent = new Intent(this, BoardFormActivity.class);
             if (!isFinishing() && !isDestroyed()) {
@@ -73,6 +74,11 @@ public class MainActivity extends BaseActivity {
         loadQuestions(api, "", 1);
 
 
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadQuestions(api, "", 1);
     }
     private void loadQuestions(ApiService api, String keyword, int pageNum) {
         api.getQuestions(keyword, pageNum).enqueue(new Callback<QuestionResponse>() {

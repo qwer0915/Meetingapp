@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -79,4 +80,9 @@ public class BaseActivity extends AppCompatActivity {
             });
         }
     }
+    protected String getLoggedInUsername() {
+        SharedPreferences prefs = getSharedPreferences("loginPrefs", MODE_PRIVATE);
+        return prefs.getString("username", ""); // 기본값은 빈 문자열
+    }
+
 }

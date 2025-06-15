@@ -101,14 +101,6 @@
             android:layout_height="wrap_content"
             android:paddingTop="12dp"/>
 
-        <!-- 답변 작성 -->
-        <EditText
-            android:id="@+id/et_answer"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:hint="답변을 입력하세요"
-            android:gravity="top"
-            android:layout_marginTop="24dp"/>
 
         <Button
             android:id="@+id/btn_submit_answer"
